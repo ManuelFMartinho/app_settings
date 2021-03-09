@@ -122,4 +122,14 @@ class AppSettings {
       'asAnotherTask': asAnotherTask,
     });
   }
+
+  static Future<void> openNotificationChannelSettings({
+    String channelId,
+    bool asAnotherTask = false,
+  }) async {
+    _channel.invokeMethod('openChannel', {
+      "channelId": channelId,
+      'asAnotherTask': asAnotherTask,
+    });
+  }
 }

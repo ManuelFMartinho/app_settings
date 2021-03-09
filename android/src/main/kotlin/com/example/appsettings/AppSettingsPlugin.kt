@@ -113,6 +113,16 @@ class AppSettingsPlugin() : MethodCallHandler, FlutterPlugin, ActivityAware {
             openSettings(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS, asAnotherTask)
         } else if (call.method == "app_settings") {
             openAppSettings(asAnotherTask)
+        } else if (call.method == "openChannel"){
+            val channelId = call.argument<String>("channelId")
+            if(Build.VERSION.SDK_INT >= 21) {
+                val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                        .putExtra(Settings.EXTRA_APP_PACKAGE, this.activity.packageName).putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
+                if (asAnotherTask) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                this.activity.startActivity(intent);
+            } else {
+                openSettings(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS, asAnotherTask);
+            }
         }
     }
 }
